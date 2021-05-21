@@ -17,10 +17,10 @@ namespace CppWinForm1 {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 		Graphics^ gr;
-		   TPoint* point;
-		   bool f1, f2, res;
+		TPoint* point;
+		bool f1, f2, res;
 
-		   Pen^ ErrorPoint, ^ ErrorLine;
+		Pen^ ErrorPoint, ^ ErrorLine;
 
 	private: System::Windows::Forms::Button^ button4;
 	private: System::Windows::Forms::Button^ button5;
@@ -49,6 +49,10 @@ namespace CppWinForm1 {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Button^ button3;
+	private: System::Windows::Forms::CheckBox^ checkBox1;
+	private: System::Windows::Forms::Label^ label3;
+
+
 
 
 
@@ -123,6 +127,8 @@ namespace CppWinForm1 {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// button4
@@ -302,7 +308,7 @@ namespace CppWinForm1 {
 			this->label12->AutoSize = true;
 			this->label12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label12->Location = System::Drawing::Point(23, 547);
+			this->label12->Location = System::Drawing::Point(444, 449);
 			this->label12->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label12->Name = L"label12";
 			this->label12->Size = System::Drawing::Size(147, 17);
@@ -368,12 +374,35 @@ namespace CppWinForm1 {
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
+			// checkBox1
+			// 
+			this->checkBox1->AutoSize = true;
+			this->checkBox1->Location = System::Drawing::Point(30, 512);
+			this->checkBox1->Name = L"checkBox1";
+			this->checkBox1->Size = System::Drawing::Size(143, 21);
+			this->checkBox1->TabIndex = 41;
+			this->checkBox1->Text = L"добавление ЛКМ";
+			this->checkBox1->UseVisualStyleBackColor = true;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label3->Location = System::Drawing::Point(33, 538);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(185, 17);
+			this->label3->TabIndex = 42;
+			this->label3->Text = L"( ПКМ для переключения )";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(918, 686);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->checkBox1);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
@@ -405,9 +434,10 @@ namespace CppWinForm1 {
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
+			this->MouseUp += gcnew MouseEventHandler(this, &MyForm::MyForm_Click);
 		}
 #pragma endregion
+	//	this->MouseUp += gcnew MouseEventHandler(this, &MyForm::MyForm_Click);
 
 
 	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -424,18 +454,18 @@ namespace CppWinForm1 {
 			chart->save(filename);
 		}
 	}
-		
-	//private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
-	//	this->button8->Enabled = false;
-	//	point = new TPoint;
-	//	point->SetX(Convert::ToInt32(textBox1->Text));
-	//	point->SetY(Convert::ToInt32(textBox2->Text));
-	//	point->show(gr);
-	//	this->textBox4->Text = Convert::ToString(point->GetX());
-	//	this->textBox4->Text += L",";
-	//	this->textBox4->Text += Convert::ToString(point->GetY());
-	//	f2 = true;
-	//}
+
+		   //private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+		   //	this->button8->Enabled = false;
+		   //	point = new TPoint;
+		   //	point->SetX(Convert::ToInt32(textBox1->Text));
+		   //	point->SetY(Convert::ToInt32(textBox2->Text));
+		   //	point->show(gr);
+		   //	this->textBox4->Text = Convert::ToString(point->GetX());
+		   //	this->textBox4->Text += L",";
+		   //	this->textBox4->Text += Convert::ToString(point->GetY());
+		   //	f2 = true;
+		   //}
 	private: System::Void button7_Click(System::Object^ sender, System::EventArgs^ e) {
 		std::string filename = msclr::interop::marshal_as<std::string>(this->textBox7->Text);
 		if (chart)
@@ -453,62 +483,62 @@ namespace CppWinForm1 {
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 
-private: System::Void button10_Click(System::Object^ sender, System::EventArgs^ e) {
-	int X1 = 0, Y1 = 0, X2 = 0, Y2 = 0, tmp = 0;
-
-
-	X1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text));
-	Y1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text));
-	X2 = std::stoi(msclr::interop::marshal_as<std::string>(textBox10->Text));
-	Y2 = std::stoi(msclr::interop::marshal_as<std::string>(textBox9->Text));
-
-
-	ch = new TChart;
-	point = new TPoint;
-	if (X1 && Y1 && X2 && Y2) {
-		point->SetX(X1);
-		point->SetY(Y1);
-
-		ch->SetFirst(point);
-
-		point = new TPoint;
-
-		point->SetX(X2);
-		point->SetY(Y2);
-		ch->SetLast(point);
-
-		if (chart)
+	private: System::Void MyForm_Click(System::Object^ sender, MouseEventArgs^ e)
+	{
+		if (e->Button == System::Windows::Forms::MouseButtons::Left && checkBox1->Checked)
 		{
-			res = chart->InsLine(ch);
+			int X1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text));
+			int Y1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text));
+			ch = new TChart;
+			point = new TPoint;
+			point->SetX(X1);
+			point->SetY(Y1);
+			ch->SetFirst(point);
+
+			point = new TPoint;
+
+			int X2 = e->X;
+			int Y2 = e->Y;
+			point->SetX(X2);
+			point->SetY(Y2);
+			textBox10->Text = Convert::ToString(X2);
+			textBox9->Text = Convert::ToString(Y2);
+
+			ch->SetLast(point);
+
+			if (chart)
+			{
+				res = chart->InsLine(ch);
+			}
+			else
+			{
+				res = true;
+				chart = ch;
+			}
+
+			if (!res) {
+				label12->Text = L"Невозможно добавить к плексу";
+			}
+			else {
+				label12->Text = L"Линия добавлена";
+				chart->show(gr);
+
+			}
+
+			textBox11->Text = Convert::ToString(X2);
+			textBox8->Text = Convert::ToString(Y2);
+
+
+
 		}
-		else
+		else if (e->Button == System::Windows::Forms::MouseButtons::Right)
 		{
-			res = true;
-			chart = ch;
+			checkBox1->Checked = !checkBox1->Checked;
+			//do something
 		}
-
-		if (!res) {
-			label12->Text = L"Невозможно добавить к плексу";
-		}
-		else {
-			label12->Text = L"Линия добавлена";
-			chart->show(gr);
-
-		}
-
-		textBox11->Text = Convert::ToString(X2);
-		textBox8->Text = Convert::ToString(Y2);
-
-
 	}
-	else
-		label12->Text = "Недостаточно данных";
 
-}
-private: System::Void label12_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (chart) {
+	private: System::Void button10_Click(System::Object^ sender, System::EventArgs^ e) {
 		int X1 = 0, Y1 = 0, X2 = 0, Y2 = 0, tmp = 0;
 
 
@@ -516,50 +546,105 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		Y1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text));
 		X2 = std::stoi(msclr::interop::marshal_as<std::string>(textBox10->Text));
 		Y2 = std::stoi(msclr::interop::marshal_as<std::string>(textBox9->Text));
-		point->SetX(X1);
-		point->SetY(Y1);
 
-		ch->SetFirst(point);
 
+		ch = new TChart;
 		point = new TPoint;
+		if (X1 && Y1 && X2 && Y2) {
+			point->SetX(X1);
+			point->SetY(Y1);
 
-		point->SetX(X2);
-		point->SetY(Y2);
-		ch->SetLast(point);
-		ch->TChart::hide(gr);
-	}
-}
-private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void textBox2_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (chart) {
-		int X = std::stoi(msclr::interop::marshal_as<std::string>(textBox1->Text));
-		int Y = std::stoi(msclr::interop::marshal_as<std::string>(textBox2->Text));
+			ch->SetFirst(point);
 
-		chart->hide(gr);
-		try {
-			chart->move(X, Y);
-			int NewX = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text)) + X;
-			int NewY = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text)) + Y;
+			point = new TPoint;
 
-			textBox11->Text = Convert::ToString(NewX);
-			textBox8->Text = Convert::ToString(NewY);
+			point->SetX(X2);
+			point->SetY(Y2);
+			ch->SetLast(point);
+
+			if (chart)
+			{
+				res = chart->InsLine(ch);
+			}
+			else
+			{
+				res = true;
+				chart = ch;
+			}
+
+			if (!res) {
+				label12->Text = L"Невозможно добавить к плексу";
+			}
+			else {
+				label12->Text = L"Линия добавлена";
+				chart->show(gr);
+
+			}
+
+			textBox11->Text = Convert::ToString(X2);
+			textBox8->Text = Convert::ToString(Y2);
+
+
 		}
-		catch(int err){
-			label12->Text = "Невозможно переместить";
-		}
-		chart->show(gr);
-	}
-	//textBox1->Text = "0";
-	//textBox2->Text = "0";
+		else
+			label12->Text = "Недостаточно данных";
 
-}
-private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (chart)
-		chart->hide(gr);
-	chart = NULL;
-}
-};
+	}
+	private: System::Void label12_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (chart) {
+			int X1 = 0, Y1 = 0, X2 = 0, Y2 = 0, tmp = 0;
+
+
+			X1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text));
+			Y1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text));
+			X2 = std::stoi(msclr::interop::marshal_as<std::string>(textBox10->Text));
+			Y2 = std::stoi(msclr::interop::marshal_as<std::string>(textBox9->Text));
+			point->SetX(X1);
+			point->SetY(Y1);
+
+			ch->SetFirst(point);
+
+			point = new TPoint;
+
+			point->SetX(X2);
+			point->SetY(Y2);
+			ch->SetLast(point);
+			ch->TChart::hide(gr);
+		}
+	}
+	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void textBox2_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (chart) {
+			int X = std::stoi(msclr::interop::marshal_as<std::string>(textBox1->Text));
+			int Y = std::stoi(msclr::interop::marshal_as<std::string>(textBox2->Text));
+
+			chart->hide(gr);
+			try {
+				chart->move(X, Y);
+				int NewX = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text)) + X;
+				int NewY = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text)) + Y;
+
+				textBox11->Text = Convert::ToString(NewX);
+				textBox8->Text = Convert::ToString(NewY);
+			}
+			catch (int err) {
+				label12->Text = "Невозможно переместить";
+			}
+			chart->show(gr);
+		}
+		//textBox1->Text = "0";
+		//textBox2->Text = "0";
+
+	}
+	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (chart)
+			chart->hide(gr);
+		chart = NULL;
+	}
+	};
 }
