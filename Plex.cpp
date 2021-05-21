@@ -320,6 +320,54 @@ void TChart::hide(Graphics^ gr, Pen^ p)
 	}
 }
 
+bool TChart::InChart(TPoint* first) {
+	TLine CurrLine;
+	TRoot* pr;
+	TPoint* pp;
+	CurrLine.pChart = this;
+	CurrLine.pFp = CurrLine.pLp = NULL;
+	while (!st.empty())
+	{
+		st.pop();
+	}
+	st.push(CurrLine);
+	while (!st.empty())
+	{
+		CurrLine = st.top();
+		st.pop();
+		while (!CurrLine.pFp)
+		{
+			pr = CurrLine.pChart->GetFisrt();
+			pp = dynamic_cast<TPoint*>(pr);
+			if (pp)
+			{
+				if (abs(pp->GetX() - first->GetX()) < 10 && abs(pp->GetY()-first->GetY())<10)
+				{
+					return true;
+				}
+			}
+			else
+			{
+				st.push(CurrLine);
+				CurrLine.pChart = dynamic_cast<TChart*>(pr);
+			}
+		}
+		if (!CurrLine.pLp)
+		{
+			pr = CurrLine.pChart->GetLast();
+			pp = dynamic_cast<TPoint*>(pr);
+			if (pp)
+			{
+				if ((abs(pp->GetX() - first->GetX()) < 10 && abs(pp->GetY() - first->GetY()) < 10) )
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 bool TChart::InsLine(TChart* line)
 {
 	TPoint* first = dynamic_cast<TPoint*>(line->GetFisrt());

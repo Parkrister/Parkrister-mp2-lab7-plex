@@ -487,55 +487,75 @@ namespace CppWinForm1 {
 	{
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && checkBox1->Checked)
 		{
-			int X1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text));
-			int Y1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text));
 			ch = new TChart;
 			point = new TPoint;
-			point->SetX(X1);
-			point->SetY(Y1);
-			ch->SetFirst(point);
-
-			point = new TPoint;
-
 			int X2 = e->X;
 			int Y2 = e->Y;
 			point->SetX(X2);
 			point->SetY(Y2);
-			textBox10->Text = Convert::ToString(X2);
-			textBox9->Text = Convert::ToString(Y2);
-
 			ch->SetLast(point);
 
-			if (chart)
-			{
-				res = chart->InsLine(ch);
-			}
-			else
-			{
-				res = true;
-				chart = ch;
-			}
+			if (chart) {
+				point = new TPoint;
+				int X1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox11->Text));
+				int Y1 = std::stoi(msclr::interop::marshal_as<std::string>(textBox8->Text));
+				point->SetX(X1);
+				point->SetY(Y1);
+				ch->SetFirst(point);
 
-			if (!res) {
-				label12->Text = L"Невозможно добавить к плексу";
+				if (chart)
+				{
+					res = chart->InsLine(ch);
+				}
+				else
+				{
+					res = true;
+					chart = ch;
+				}
+
+				if (!res) {
+					label12->Text = L"Невозможно добавить к плексу";
+				}
+				else {
+					label12->Text = L"Линия добавлена";
+					chart->show(gr);
+
+				}
+
 			}
 			else {
-				label12->Text = L"Линия добавлена";
+				point = new TPoint;
+				point->SetX(X2);
+				point->SetY(Y2);
+				ch->SetFirst(point);
+				chart = ch;
 				chart->show(gr);
 
 			}
+			//textBox10->Text = Convert::ToString(X2);
+			//textBox9->Text = Convert::ToString(Y2);
 
 			textBox11->Text = Convert::ToString(X2);
 			textBox8->Text = Convert::ToString(Y2);
-
-
 
 		}
 		else if (e->Button == System::Windows::Forms::MouseButtons::Right)
 		{
 			checkBox1->Checked = !checkBox1->Checked;
+
+			/*
+			point = new TPoint;
+			point->SetX(e->X);
+			point->SetY(e->Y);
+
+			textBox10->Text = Convert::ToString(point->GetX());
+			textBox9->Text = Convert::ToString(point->GetY());
+			point->show(gr, ErrorPoint);
+			*/
+
 			//do something
 		}
+		
 	}
 
 	private: System::Void button10_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -644,6 +664,8 @@ namespace CppWinForm1 {
 	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (chart)
 			chart->hide(gr);
+		textBox11->Text = "100";
+		textBox8->Text = "100";
 		chart = NULL;
 	}
 	};

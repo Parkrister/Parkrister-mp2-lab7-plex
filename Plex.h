@@ -59,5 +59,6 @@ public:
 	void save(std::string filename);
 	void read(std::string filename);
 	void move(int _x = 0, int _y = 0);
+	bool InChart(TPoint* _point); // точка принадлежит плексу
 };
 
